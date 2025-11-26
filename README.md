@@ -48,7 +48,7 @@ git push -u origin main
 Luego en GitHub → Settings → Pages → Source: main / root
 
 ✔ La web quedará publicada automáticamente
-Ejemplo URL → https://tuusuario.github.io/JalirTiticaca10K/
+Ejemplo URL → https://github.com/websitios/jalir-titicaca-10k.git
 
 # ACTUALIZAR LA PÁGINA WEB DESDE VS CODE
 
