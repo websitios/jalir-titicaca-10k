@@ -56,7 +56,7 @@ Ejemplo URL → https://tuusuario.github.io/JalirTiticaca10K/
 
 CTRL + S           # Guardar cambios
 git add .          # Agregar al repositorio
-git commit -m "Actualización de estilo o contenido"
+git commit -m "act"
 git push           # Subir a GitHub
 
 
