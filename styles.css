@@ -187,7 +187,7 @@ body {
 .social {
     width: 100vw;
     margin-left: calc(50% - 50vw);
-    background: linear-gradient(rgba(117, 174, 219, 0.70), rgba(32, 134, 202, 0.70));
+    background: linear-gradient(rgba(117, 174, 219, 0.70), rgba(32, 134, 202, 0.50));
     /* 70% visibilidad */
     padding: 12px 0;
     text-align: center;
