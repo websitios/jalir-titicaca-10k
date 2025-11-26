@@ -54,10 +54,10 @@ Ejemplo URL → https://tuusuario.github.io/JalirTiticaca10K/
 
 ## Cada vez que modifiques código:
 
-CTRL + S           # Guardar cambios
-git add .          # Agregar al repositorio
+CTRL + S         
+git add . 
 git commit -m "act"
-git push           # Subir a GitHub
+git push
 
 
 🕒 GitHub Pages actualiza la web en 10–60 segundos

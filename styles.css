@@ -3,9 +3,11 @@
 ============================================================ */
 
 /* ===== FONDO CON GIF ANIMADO ===== */
+
 body {
     background:
-        linear-gradient(rgba(0, 166, 255, 0.70), rgba(0, 166, 255, 0.85)),
+        linear-gradient(rgba(0, 166, 255, 0.45), rgba(0, 166, 255, 0.55)),
+        /* ← opacidad ajustada */
         url("atleta.gif");
     background-size: cover;
     background-position: center;
@@ -187,7 +189,7 @@ body {
 .social {
     width: 100vw;
     margin-left: calc(50% - 50vw);
-    background: linear-gradient(rgba(117, 174, 219, 0.70), rgba(32, 134, 202, 0.80));
+    background: linear-gradient(rgba(117, 174, 219, 0.70), rgba(32, 134, 202, 0.10));
     /* 70% visibilidad */
     padding: 12px 0;
     text-align: center;
