@@ -59,7 +59,7 @@ git add .
 git commit -m "act"
 git push
 
-
+La pagina web se publico en esta URL: https://websitios.github.io/jalir-titicaca-10k/
 🕒 GitHub Pages actualiza la web en 10–60 segundos
 ↺ Basta recargar la URL en navegador para ver cambios.
 
