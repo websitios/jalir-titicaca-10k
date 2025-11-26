@@ -1,0 +1,352 @@
+/* ============================================================
+   JALIR TITICACA 10K – LANDING PAGE 2025 (FULL + ANIMACIÓN)
+============================================================ */
+
+/* ===== FONDO CON GIF ANIMADO ===== */
+body {
+    background:
+        linear-gradient(rgba(0, 166, 255, 0.70), rgba(0, 166, 255, 0.85)),
+        url("atleta.gif");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: "Poppins", sans-serif;
+    color: white;
+}
+
+/* ------------------------------------------------------------
+   CONTENEDOR GLOBAL
+------------------------------------------------------------ */
+.container {
+    width: min(1100px, 90%);
+    margin: auto;
+}
+
+/* ------------------------------------------------------------
+   HERO PRINCIPAL
+------------------------------------------------------------ */
+.hero {
+    padding: 40px 0 70px;
+    text-align: center;
+}
+
+/* Logo */
+.hero__logo-img {
+    width: 280px;
+    max-width: 95%;
+    height: auto;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.3));
+}
+
+/* Subtítulo */
+.hero__subtitle {
+    font-size: 1.1rem;
+    max-width: 650px;
+    margin: 10px auto 20px;
+}
+
+/* ------------------------------------------------------------
+   BOTONES (SEPARACIÓN MAYOR)
+------------------------------------------------------------ */
+.btn {
+    padding: 12px 36px;
+    border-radius: 999px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    transition: .2s ease;
+}
+
+/* Botones principales */
+.btn--primary,
+.btn--secondary {
+    background: linear-gradient(90deg, #9b8cff, #7b6be8);
+}
+
+.btn--secondary {
+    opacity: .88;
+}
+
+.btn--green {
+    background: #32c759;
+}
+
+/* Espaciado */
+.hero__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 180px;
+    margin-top: 25px;
+}
+
+/* BOTÓN ACTIVADO */
+.btn.active {
+    background: #5a44ff !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 18px rgba(90, 68, 255, 0.6);
+}
+
+/* ------------------------------------------------------------
+   STATS
+------------------------------------------------------------ */
+.hero__stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.stat__value {
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.stat__label {
+    opacity: .9;
+    font-size: 1rem;
+}
+
+/* ============================================================
+   COUNTDOWN FINAL + ANIMACIÓN
+============================================================ */
+.countdown-card {
+    background: white;
+    color: #333;
+    padding: 10px 18px;
+    max-width: 900px;
+    margin: 30px auto;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.countdown {
+    display: flex;
+    gap: 26px;
+}
+
+/* Animación visual */
+.countdown__number {
+    font-size: 2.6rem;
+    font-weight: 800;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.countdown__label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #777;
+}
+
+/* POP al cambiar */
+.change {
+    animation: pop .35s ease-out;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(1);
+        opacity: .9;
+    }
+
+    50% {
+        transform: scale(1.25);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: .95;
+    }
+
+    50% {
+        transform: scale(1.06);
+        opacity: 1;
+    }
+}
+
+/* ============================================================
+   --- BLOQUE INFERIOR FULL WIDTH ---
+============================================================ */
+.social {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background: linear-gradient(#75aedb, #2086ca);
+    padding: 12px 0;
+    text-align: center;
+}
+
+.social__icons a {
+    font-size: 1.7rem;
+    color: white;
+    margin: 0 10px;
+}
+
+/* Footer */
+.footer {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background: #292727;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.8rem;
+    color: #eaeaea;
+    font-weight: 600;
+}
+
+
+.whatsapp-float {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #25d366;
+    color: white;
+    padding: 14px;
+    font-size: 1.9rem;
+    border-radius: 50%;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+    z-index: 3000;
+    transition: transform .25s ease-out;
+}
+
+/* ============================================================
+   📱 TABLET / CELULAR RESPONSIVE
+============================================================ */
+@media(max-width:900px) {
+    .hero__buttons {
+        gap: 70px;
+    }
+
+    .countdown-card {
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
+    }
+}
+
+@media(max-width:600px) {
+    .hero__buttons {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .stat__value {
+        font-size: 1.8rem;
+    }
+
+    .countdown {
+        gap: 12px;
+    }
+
+    .countdown__number {
+        font-size: 2rem;
+    }
+}
+
+@media(max-width:450px) {
+    .hero__logo-img {
+        width: 200px;
+    }
+
+    .countdown-card {
+        max-width: 92%;
+    }
+
+    .social__icons a {
+        font-size: 1.4rem;
+    }
+}
+
+
+/* ======================================================================
+   🌙🟡 SISTEMA DARK MODE + LIGHT MODE
+====================================================================== */
+
+/* BOTÓN flotante */
+.tema-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #fff;
+    color: #111;
+    border: none;
+    font-size: 1.2rem;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
+    z-index: 999;
+    transition: .25s;
+}
+
+.tema-btn:hover {
+    transform: scale(1.08);
+}
+
+/* ============ MODO OSCURO ============ */
+.dark-mode {
+    background: linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .85)), url("atleta.gif");
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* Texto y títulos */
+.dark-mode .hero__subtitle,
+.dark-mode .stat__label,
+.dark-mode .countdown__label {
+    color: #dedede;
+}
+
+/* Tarjeta contador */
+.dark-mode .countdown-card {
+    background: #0d0d0d;
+    color: #00eaff;
+    box-shadow: 0 0 25px rgba(0, 238, 255, .45);
+}
+
+/* Números brillantes */
+.dark-mode .countdown__number {
+    color: #7af9ff;
+    text-shadow: 0 0 10px #00faff;
+}
+
+/* Botones Os theme */
+.dark-mode .btn--primary,
+.dark-mode .btn--secondary {
+    background: linear-gradient(90deg, #8f77ff, #5c41ff);
+    box-shadow: 0 0 14px rgba(118, 91, 255, .6);
+}
+
+.dark-mode .btn--green {
+    background: #00ff62;
+    color: black;
+    box-shadow: 0 0 18px rgba(0, 255, 98, .6);
+}
+
+/* Redes */
+.dark-mode .social {
+    background: linear-gradient(#000, #041b30);
+}
+
+/* Footer */
+.dark-mode .footer {
+    background: black;
+    color: #bbbbbb;
+}
