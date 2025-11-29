@@ -1,142 +1,160 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jalir Titicaca 10K – 2025</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jalir Titicaca 10K – 2025</title>
 
-    <!-- FAVICON ICO — FINAL CORRECTO -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
-    <!-- Fuente -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <!-- Iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- ✅ CSS SOLO INDEX -->
+  <link rel="stylesheet" href="index.css" />
 </head>
 
+<body class="page-main">
+  <canvas id="hud"></canvas>
 
-<body>
-    <!-- ======= MODO OSCURO/CLARO ======= -->
-    <button id="tema-toggle" class="tema-btn">
-        🌙/☀️
-    </button>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <button class="burger" id="btnMenu" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
 
+      <!-- (Se mantiene por si luego lo quieres activar; en INDEX se oculta por CSS) -->
+      <div class="topbar__brand" aria-hidden="true">
+        <span class="chip">JALIR</span>
+        <span class="topbar__title">TITICACA 10K</span>
+        <span class="chip chip--alt">2025</span>
+      </div>
 
-    <!-- ================= HERO ================= -->
-    <header class="hero">
-        <div class="container hero__content">
+      <a class="topbar__cta" href="https://physicaleducation.shinyapps.io/app_v3/" target="_blank" rel="noopener" aria-hidden="true">
+        RESULTADOS <i class="fa-solid fa-arrow-up-right-from-square"></i>
+      </a>
+    </div>
+  </header>
 
-            <!-- LOGO -->
-            <div class="hero__logo">
-                <img src="logo.gif" alt="Logo Jalir Titicaca 10K" class="hero__logo-img">
-            </div>
+  <!-- MENU (OFFCANVAS) -->
+  <aside class="menu" id="menu" aria-label="Panel de Navegación">
+    <div class="menu__header">
+      <div class="menu__title">Panel de Navegación</div>
+      <button class="menu__close" id="btnClose" aria-label="Cerrar menú">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
 
-            <p class="hero__subtitle">
-                Carrera pedestre alrededor del Lago Titicaca. Vive la experiencia deportiva más grande de la región.
-            </p>
+    <nav class="menu__nav">
+      <a class="menu__link" href="promo.html">
+        <i class="fa-solid fa-ticket"></i> Comprar tiket
+      </a>
 
-            <!-- BOTONES -->
-            <div class="hero__buttons">
-                <a href="https://ganaconyhony.com/" class="btn btn--primary">Registrarme</a>
-                <a href="https://physicaleducation.shinyapps.io/app_v3/" class="btn btn--secondary">Consultar
-                    resultados</a>
-            </div>
+      <a class="menu__link" href="https://physicaleducation.shinyapps.io/app_v3/" target="_blank" rel="noopener">
+        <i class="fa-solid fa-list-check"></i> Consultar resultados
+      </a>
 
-            <!-- DATOS -->
-            <div class="hero__stats">
-                <div class="stat">
-                    <span class="stat__value">10 K</span>
-                    <span class="stat__label">Distancia</span>
-                </div>
+      <!-- ✅ REDES: despliega submenú dentro del panel -->
+      <button
+        class="menu__link menu__link--toggle"
+        id="btnRedes"
+        type="button"
+        aria-expanded="false"
+        aria-controls="submenuRedes"
+      >
+        <span class="menu__linkLeft">
+          <i class="fa-solid fa-share-nodes"></i> Redes
+        </span>
+        <i class="fa-solid fa-chevron-down menu__chev" aria-hidden="true"></i>
+      </button>
 
-                <div class="stat">
-                    <span class="stat__value">2025</span>
-                    <span class="stat__label">Edición</span>
-                </div>
+      <!-- ✅ Submenú redes -->
+      <div class="menu__sub" id="submenuRedes" hidden>
+        <a class="menu__sublink" href="https://web.facebook.com/yhony.laquise" target="_blank" rel="noopener">
+          <i class="fab fa-facebook-f"></i> Facebook
+        </a>
+        <a class="menu__sublink" href="https://www.youtube.com/@atletico4580" target="_blank" rel="noopener">
+          <i class="fab fa-youtube"></i> YouTube
+        </a>
+        <a class="menu__sublink" href="https://www.tiktok.com/@yhonypino" target="_blank" rel="noopener">
+          <i class="fab fa-tiktok"></i> TikTok
+        </a>
+        <a class="menu__sublink" href="https://wa.me/51921349538" target="_blank" rel="noopener">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+      </div>
+    </nav>
 
-                <div class="stat">
-                    <span class="stat__value">Puno</span>
-                    <span class="stat__label">Perú</span>
-                </div>
-            </div>
+    <div class="menu__footer">
+      <small>© 2025 — Jalir Titicaca 10K</small>
+    </div>
+  </aside>
 
-            <!-- COUNTDOWN -->
-            <section class="countdown-card">
-                <div class="countdown">
-                    <div class="countdown__item">
-                        <span id="days" class="countdown__number">0</span>
-                        <span class="countdown__label">DÍAS</span>
-                    </div>
+  <div class="backdrop" id="backdrop" aria-hidden="true"></div>
 
-                    <div class="countdown__item">
-                        <span id="hours" class="countdown__number">0</span>
-                        <span class="countdown__label">HORAS</span>
-                    </div>
+  <!-- HERO -->
+  <main class="hero">
+    <div class="container hero__grid">
 
-                    <div class="countdown__item">
-                        <span id="minutes" class="countdown__number">0</span>
-                        <span class="countdown__label">MINUTOS</span>
-                    </div>
+      <!-- PANEL 1: SOLO CARRO + BOTÓN -->
+      <section class="glass panel panel--simple">
+        <img class="simple__img" src="images/auto.png" alt="Auto promo" onerror="this.style.display='none'">
+        <a class="btn btn--buy" href="promo.html">
+          Comprar tu tiket
+          <span class="btn__spark"></span>
+        </a>
+      </section>
 
-                    <div class="countdown__item">
-                        <span id="seconds" class="countdown__number">0</span>
-                        <span class="countdown__label">SEGUNDOS</span>
-                    </div>
-                </div>
+      <!-- PANEL 2: SOLO LOGO + BOTÓN -->
+      <section class="glass panel panel--simple">
+        <img class="simple__logo" src="logo.gif" alt="Logo Jalir Titicaca 10K" onerror="this.style.display='none'">
+        <a class="btn btn--results" href="https://physicaleducation.shinyapps.io/app_v3/" target="_blank" rel="noopener">
+          Consultar resultados
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <span class="btn__spark"></span>
+        </a>
+      </section>
 
-                <div class="countdown__promo">
-                    <p class="promo__title">¡Corre a inscribirte — cupos por agotarse!.</p>
-                    <p class="promo__text">Fecha límite: Sábado 29 de noviembre.</p>
+    </div>
+  </main>
 
-                    <a href="https://ganaconyhony.com/" class="btn btn--green">Registrarme</a>
-                </div>
-            </section>
+  <!-- SOCIAL -->
+  <section class="social" id="redes">
+    <div class="container social__content glass">
+      <h2 class="social__title">SÍGUENOS</h2>
 
-        </div>
-    </header>
+      <div class="social__icons">
+        <a class="social__icon" href="https://web.facebook.com/yhony.laquise" target="_blank" rel="noopener" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a class="social__icon" href="https://www.youtube.com/@atletico4580" target="_blank" rel="noopener" aria-label="YouTube">
+          <i class="fab fa-youtube"></i>
+        </a>
+        <a class="social__icon" href="https://www.tiktok.com/@yhonypino" target="_blank" rel="noopener" aria-label="TikTok">
+          <i class="fab fa-tiktok"></i>
+        </a>
+        <a class="social__icon" href="https://wa.me/51921349538" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </div>
+    </div>
+  </section>
 
-    <!-- ============= REDES ============= -->
-    <section class="social">
-        <div class="container social__content">
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__line1">Jalir Titicaca 10k - Todos los derechos reservado - 2025</div>
+    <div class="footer__line2">
+      Desarrollado por
+      <a href="https://www.youtube.com/@jsportsTv24" target="_blank" rel="noopener">Jsports.tv</a>
+    </div>
+  </footer>
 
-            <p class="social__title">SÍGUENOS</p>
+  <!-- WhatsApp -->
+  <a href="https://wa.me/51921349538" class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
 
-            <div class="social__icons">
-                <a href="https://web.facebook.com/yhony.laquise" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.tiktok.com/@yhonypino" target="_blank"><i class="fab fa-tiktok"></i></a>
-                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.youtube.com/@atletico4580" target="_blank"><i class="fab fa-youtube"></i></a>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ============= FOOTER ============= -->
-    <footer class="footer">
-        Jalir Titicaca 10 K. – Todos los derechos reservados – 2025.<br>
-        <small>Desarrollado por
-            <a href="https://www.youtube.com/@jsportsTv24" target="_blank"
-                style="color:#3c5457; font-weight:600; text-decoration:none;">
-                JSports.tv
-            </a>
-        </small>
-    </footer>
-
-
-    <!-- WhatsApp -->
-    <a href="https://wa.me/+51921349538" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Script -->
-    <script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
-
 </html>

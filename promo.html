@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprar Ticket - Promo</title>
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <!-- ✅ CSS SOLO PARA PROMO -->
+  <link rel="stylesheet" href="promo.css" />
+</head>
+
+<body class="page-promo">
+  <canvas id="hud"></canvas>
+
+  <!-- ✅ TOPBAR MINIMAL: SOLO FLECHA -->
+  <header class="topbar topbar--promo-min">
+    <div class="topbar__inner">
+      <a class="back-btn" href="index.html" aria-label="Volver">←</a>
+    </div>
+  </header>
+
+  <main class="promo">
+    <div class="promo__wrap">
+      <img class="promo__img" src="images/promo.png" alt="Promo Gana con Yhony">
+      <a class="promo__cta" href="https://ganaconyhony.com/" target="_blank" rel="noopener">Compra tu ticket</a>
+    </div>
+  </main>
+
+  <footer class="footer footer--compact">
+    <div class="footer__line1">Jalir Titicaca 10k - Todos los derechos reservado - 2025</div>
+  </footer>
+
+  <!-- ✅ WhatsApp flotante -->
+  <a href="https://wa.me/51921349538" class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- ✅ Tu JS (HUD + efectos) -->
+  <script src="script.js"></script>
+</body>
+</html>

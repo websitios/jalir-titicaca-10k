@@ -1,197 +1,420 @@
-// ============================================================
-//   CONTADOR JALIR TITICACA 10K – CON DÍAS + HORAS TOTALES 🔥
-//   (Tiempo real por Internet + respaldo manual)
-// ============================================================
+(() => {
+  "use strict";
 
-// Fecha oficial del evento
-const FechaEvento = new Date("Nov 30, 2025 08:00:00").getTime();
+  const $ = (sel, root = document) => root.querySelector(sel);
 
-// ===============================
-//   VALORES BACKUP (modo offline)
-// ===============================
-let dias = 4;
-let horasTotales = 104;
-let minutos = 0;
-let segundos = 0;
+  // ===== Helpers (color desde CSS var --morado / --azul / etc.) =====
+  const getCssVar = (name) =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
-// ============================================================
-//   HORA REAL POR INTERNET 🌎
-// ============================================================
-let offset = null;
+  const hexToRgb = (hex) => {
+    const h = (hex || "").replace("#", "").trim();
+    if (![3, 6].includes(h.length)) return null;
+    const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+    const n = parseInt(full, 16);
+    if (Number.isNaN(n)) return null;
+    return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+  };
 
-async function sincronizarHora() {
-    try {
-        const r = await fetch("https://worldtimeapi.org/api/timezone/America/Lima");
-        const d = await r.json();
-        offset = new Date(d.datetime).getTime() - Date.now();
-        console.log("%c✔ Hora sincronizada con internet", "color:#00ff88;font-size:14px");
-    } catch {
-        console.log("%c⚠ Sin conexión — Modo manual activo", "color:yellow;font-size:14px");
-    }
-}
-sincronizarHora();
-setInterval(sincronizarHora, 600000);
+  const accentRGB = (() => {
+    // preferimos morado Jalir
+    const morado = getCssVar("--morado");
+    const rgb = hexToRgb(morado);
+    // fallback al "cyan" original si no existe var
+    return rgb ? `${rgb.r},${rgb.g},${rgb.b}` : "0,255,255";
+  })();
 
+  /* ==========================================================
+     LIGHT SWEEP (Barrido de luz)
+  ========================================================== */
+  const prefersReduce =
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  const SWEEP = {
+    duration: 1750,
+    interval: 3000,
+    easing: "cubic-bezier(.18,.92,.2,1)",
+    opacityPeak: 0.92,
+    widthPct: 92,
+    skewDeg: -20,
+    lockMs: 1900,
+  };
 
-// ============================================================
-//  EFECTO POP EN NÚMEROS
-// ============================================================
-function animar(id, valor) {
-    const el = document.getElementById(id);
-    if (el.textContent !== valor.toString()) {
-        el.textContent = valor;
-        el.classList.add("change");
-        setTimeout(() => el.classList.remove("change"), 300);
-    }
-}
+  const ensureOverlayHost = (el) => {
+    const cs = getComputedStyle(el);
+    if (cs.position === "static") el.style.position = "relative";
+    el.style.overflow = "hidden";
+  };
 
+  const runSweep = (el) => {
+    if (!el || prefersReduce) return;
+    if (el.__sweeping) return;
+    el.__sweeping = true;
 
+    ensureOverlayHost(el);
 
-// ============================================================
-//   CONTADOR EN VIVO
-// ============================================================
-function actualizarContador() {
+    const sweep = document.createElement("span");
+    sweep.setAttribute("aria-hidden", "true");
 
-    // MODO ONLINE (tiempo exacto)
-    if (offset !== null) {
-        const ahora = Date.now() + offset;
-        const diff = FechaEvento - ahora;
-        if (diff <= 0) return;
-
-        dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-        horasTotales = Math.floor(diff / (1000 * 60 * 60));
-        minutos = Math.floor((diff / (1000 * 60)) % 60);
-        segundos = Math.floor((diff / 1000) % 60);
-    }
-
-    // MODO MANUAL (si no hay internet)
-    else {
-        segundos--;
-        if (segundos < 0) { segundos = 59; minutos--; }
-        if (minutos < 0) { minutos = 59; horasTotales--; }
-        if (horasTotales % 24 === 0 && minutos === 0 && segundos === 0) dias--;
-    }
-
-    animar("days", dias);
-    animar("hours", horasTotales);
-    animar("minutes", minutos);
-    animar("seconds", segundos);
-}
-
-
-// Ejecutar continuamente
-actualizarContador();
-setInterval(actualizarContador, 1000);
-
-
-// ============================================================
-//   EFECTO CLICK EN BOTONES
-// ============================================================
-const botones = document.querySelectorAll(".btn--primary, .btn--secondary");
-botones.forEach(boton => {
-    boton.addEventListener("click", function () {
-        botones.forEach(b => b.classList.remove("active"));
-        this.classList.add("active");
+    Object.assign(sweep.style, {
+      position: "absolute",
+      top: "-60%",
+      bottom: "-60%",
+      left: "-95%",
+      width: `${SWEEP.widthPct}%`,
+      pointerEvents: "none",
+      zIndex: "9999",
+      opacity: "0",
+      transform: `translateX(-180%) skewX(${SWEEP.skewDeg}deg)`,
+      background:
+        "linear-gradient(90deg," +
+        "rgba(255,255,255,0) 0%," +
+        "rgba(255,255,255,.06) 32%," +
+        `rgba(${accentRGB},.10) 40%,` +
+        "rgba(255,255,255,.38) 46%," +
+        "rgba(255,255,255,.98) 50%," +
+        "rgba(255,255,255,.38) 54%," +
+        `rgba(${accentRGB},.10) 60%,` +
+        "rgba(255,255,255,.06) 70%," +
+        "rgba(255,255,255,0) 100%)",
+      mixBlendMode: "screen",
+      filter: "blur(.7px) brightness(1.18) saturate(1.08)",
+      boxShadow: `0 0 32px rgba(255,255,255,.20), 0 0 58px rgba(${accentRGB},.14)`,
     });
-});
 
+    el.appendChild(sweep);
 
+    const anim = sweep.animate(
+      [
+        { transform: `translateX(-190%) skewX(${SWEEP.skewDeg}deg)`, opacity: 0 },
+        { opacity: SWEEP.opacityPeak, offset: 0.22 },
+        { opacity: SWEEP.opacityPeak, offset: 0.62 },
+        { transform: `translateX(290%) skewX(${SWEEP.skewDeg}deg)`, opacity: 0 },
+      ],
+      { duration: SWEEP.duration, easing: SWEEP.easing, fill: "forwards" }
+    );
 
-// ============================================================
-//   MODO EVENTO PRO – SE ACTIVA SOLO SEGÚN FALTAN DÍAS 🔥
-// ============================================================
-function activarModoEvento() {
-    const body = document.querySelector("body");
-    const titulo = document.querySelector(".promo__title");
-    const subtitulo = document.querySelector(".promo__text");
+    const cleanup = () => {
+      try { sweep.remove(); } catch (_) {}
+      el.__sweeping = false;
+    };
 
-    if (!body) return;
+    anim.onfinish = cleanup;
+    window.setTimeout(cleanup, SWEEP.lockMs);
+  };
 
-    body.style.transition = "0.7s";
+  const isVisibleEnough = (el) => {
+    if (!el || !el.isConnected) return false;
+    const r = el.getBoundingClientRect();
+    const inVp = r.bottom > 0 && r.right > 0 && r.top < innerHeight && r.left < innerWidth;
+    if (!inVp) return false;
+    const cs = getComputedStyle(el);
+    return cs.display !== "none" && cs.visibility !== "hidden" && cs.opacity !== "0";
+  };
 
-    if (dias > 5) {
-        body.style.filter = "brightness(1)";
+  const attachInteractiveSweep = (selector) => {
+    const els = Array.from(document.querySelectorAll(selector));
+    els.forEach((el) => {
+      el.addEventListener("pointerenter", () => runSweep(el), { passive: true });
+      el.addEventListener("pointerdown", () => runSweep(el), { passive: true });
+      el.addEventListener("click", () => runSweep(el));
+    });
+    return els;
+  };
+
+  const timers = new Map();
+  let visibilityHooked = false;
+
+  const startAutoSweep = (key, elements, { sync = false } = {}) => {
+    if (prefersReduce) return;
+
+    if (timers.has(key)) clearInterval(timers.get(key));
+
+    const tick = () => {
+      if (document.hidden) return;
+      if (!elements?.length) return;
+
+      if (sync) elements.forEach((el) => isVisibleEnough(el) && runSweep(el));
+      else elements.forEach((el) => isVisibleEnough(el) && runSweep(el));
+    };
+
+    tick();
+    timers.set(key, setInterval(tick, SWEEP.interval));
+
+    if (!visibilityHooked) {
+      visibilityHooked = true;
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) timers.forEach(() => tick());
+      });
     }
-    else if (dias <= 5 && dias >= 3) {
-        body.style.filter = "brightness(1.04)";
-    }
-    else if (dias === 2) {
-        body.style.filter = "brightness(1.1) contrast(1.1)";
-        titulo.style.animation = "shake 1.5s infinite";
-    }
-    else if (dias === 1) {
-        body.style.filter = "brightness(1.25)";
-        titulo.innerHTML = "🔥 ¡Mañana corremos! No quedes fuera";
-        titulo.style.animation = "heartbeat 1s infinite";
-    }
-    else if (dias === 0) {
-        body.style.filter = "brightness(1.3)";
-        titulo.innerHTML = "🏁 EVENTO EN VIVO — RESULTADOS Y STREAMING";
-        subtitulo.innerHTML = "Actualización en tiempo real";
-        titulo.style.animation = "flash 0.6s infinite";
-    }
-}
-setInterval(activarModoEvento, 1000);
+  };
 
-// ============================================================
-//  🌙 MODO OSCURO – CLARO AUTOMÁTICO
-// ============================================================
+  /* ==========================================================
+     1) INDEX: 2 botones a la vez
+  ========================================================== */
+  const indexBtns = attachInteractiveSweep(".btn--buy, .btn--results");
+  if (indexBtns.length) startAutoSweep("indexBtns", indexBtns, { sync: true });
 
-const toggle = document.getElementById("tema-toggle");
+  /* ==========================================================
+     2) PROMO: botón .promo__cta
+  ========================================================== */
+  const promoBtns = attachInteractiveSweep(".promo__cta");
+  if (promoBtns.length) startAutoSweep("promoCta", promoBtns, { sync: true });
 
-// Cargar estado guardado
-if (localStorage.getItem("tema") === "dark") {
-    document.body.classList.add("dark-mode");
-    toggle.textContent = "☀️";
-}
+  /* ==========================================================
+     3) Navegación: menú + submenú + back
+  ========================================================== */
+  attachInteractiveSweep(".menu__link, .menu__sublink, .back-btn");
 
-// Evento de cambio de tema
-toggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
+  /* ==========================================================
+     MENU OFFCANVAS + SUBMENU REDES
+  ========================================================== */
+  const btnMenu = $("#btnMenu");
+  const btnClose = $("#btnClose");
+  const menu = $("#menu");
+  const backdrop = $("#backdrop");
 
-    if (document.body.classList.contains("dark-mode")) {
-        toggle.textContent = "☀️";
-        localStorage.setItem("tema", "dark");
+  const btnRedes = $("#btnRedes");
+  const submenuRedes = $("#submenuRedes");
+
+  const setRedesOpen = (open) => {
+    if (!btnRedes || !submenuRedes) return;
+    btnRedes.classList.toggle("is-open", open);
+    btnRedes.setAttribute("aria-expanded", String(open));
+    submenuRedes.classList.toggle("is-open", open);
+
+    if (open) {
+      submenuRedes.hidden = false;
+      runSweep(btnRedes);
     } else {
-        toggle.textContent = "🌙";
-        localStorage.setItem("tema", "light");
+      window.setTimeout(() => {
+        if (!submenuRedes.classList.contains("is-open")) submenuRedes.hidden = true;
+      }, 240);
     }
-});
+  };
 
-// ============================================================
-//  EFECTO HOVER EN REDES SOCIALES – LUZ POR MARCA 🔥
-// ============================================================
+  if (btnRedes && submenuRedes) {
+    btnRedes.setAttribute("aria-expanded", "false");
+    submenuRedes.hidden = true;
+    submenuRedes.classList.remove("is-open");
+  }
 
-const redes = document.querySelectorAll(".social__icons a i");
+  const openMenu = () => {
+    if (!menu || !backdrop) return;
+    menu.classList.add("is-open");
+    backdrop.classList.add("is-open");
+    document.documentElement.classList.add("no-scroll");
 
-redes.forEach(icon => {
-    icon.addEventListener("mouseover", () => {
-        if (icon.classList.contains("fa-facebook-f")) icon.style.color = "#1877F2";      // Facebook
-        if (icon.classList.contains("fa-tiktok")) icon.style.color = "#181617ff";      // TikTok
-        if (icon.classList.contains("fa-instagram")) icon.style.color = "#ea413fff";      // Instagram
-        if (icon.classList.contains("fa-youtube")) icon.style.color = "#FF0000";      // YouTube
+    // ✅ ocultar burger también por JS (además del CSS)
+    if (btnMenu) {
+      btnMenu.setAttribute("aria-expanded", "true");
+      btnMenu.style.visibility = "hidden";
+      btnMenu.style.pointerEvents = "none";
+      btnMenu.style.opacity = "0";
+    }
 
-        icon.style.transform = "scale(1.3)";
-        icon.style.transition = "0.25s";
-        icon.style.textShadow = "0 0 12px rgba(255,255,255,.8)";
-    });
+    const links = menu.querySelectorAll(".menu__link, .menu__sublink");
+    links.forEach((el, i) => setTimeout(() => runSweep(el), 90 + i * 55));
+  };
 
-    icon.addEventListener("mouseout", () => {
-        icon.style.color = "#fff";       // ← vuelve blanco (estilo original)
-        icon.style.transform = "scale(1)";
-        icon.style.textShadow = "none";
-    });
-});
+  const closeMenu = () => {
+    if (!menu || !backdrop) return;
+    setRedesOpen(false);
+    menu.classList.remove("is-open");
+    backdrop.classList.remove("is-open");
+    document.documentElement.classList.remove("no-scroll");
 
+    if (btnMenu) {
+      btnMenu.setAttribute("aria-expanded", "false");
+      btnMenu.style.visibility = "";
+      btnMenu.style.pointerEvents = "";
+      btnMenu.style.opacity = "";
+    }
+  };
 
-// ============================================================
-// 🔰 BOTÓN WHATSAPP FLOTANTE CON MOVIMIENTO SEGÚN SCROLL
-// ============================================================
-const wpp = document.querySelector(".whatsapp-float");
+  btnMenu?.addEventListener("click", openMenu);
+  btnClose?.addEventListener("click", closeMenu);
+  backdrop?.addEventListener("click", closeMenu);
+  window.addEventListener("keydown", (e) => e.key === "Escape" && closeMenu());
 
-window.addEventListener("scroll", () => {
-    let y = window.scrollY * 0.12; // ← velocidad del movimiento (ajustable)
-    wpp.style.transform = `translateY(${y}px)`;
-    wpp.style.transition = "0.2s linear";
-});
+  btnRedes?.addEventListener("click", (e) => {
+    e.preventDefault();
+    const isOpen = btnRedes.getAttribute("aria-expanded") === "true";
+    setRedesOpen(!isOpen);
+  });
+
+  menu?.addEventListener("click", (e) => {
+    const a = e.target.closest("a,button");
+    if (!a) return;
+
+    runSweep(a);
+
+    if (a.id === "btnRedes") return;
+
+    if (a.classList.contains("menu__sublink")) {
+      closeMenu();
+      return;
+    }
+
+    if (a.matches("a")) closeMenu();
+  });
+
+  /* ==========================================================
+     TOPBAR: ocultar al bajar / mostrar al subir
+  ========================================================== */
+  const topbar = $(".topbar");
+  const body = document.body;
+  const isStatic = body.classList.contains("page-main");
+
+  const hasScrollablePage = () =>
+    document.documentElement.scrollHeight - window.innerHeight > 4;
+
+  let lastY = window.scrollY;
+  let ticking = false;
+
+  const updateTopbarOnScroll = () => {
+    ticking = false;
+    if (!topbar) return;
+    if (isStatic) return;
+    if (!hasScrollablePage()) return;
+
+    const y = window.scrollY;
+    const dy = y - lastY;
+    const threshold = 10;
+
+    if (Math.abs(dy) < threshold) return;
+
+    if (dy > 0 && y > 40) topbar.classList.add("is-hidden");
+    else topbar.classList.remove("is-hidden");
+
+    lastY = y;
+  };
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateTopbarOnScroll);
+    },
+    { passive: true }
+  );
+
+  window.addEventListener("resize", () => {
+    if (!topbar) return;
+    if (isStatic) return;
+    if (!hasScrollablePage()) topbar.classList.remove("is-hidden");
+  });
+
+  /* ==========================================================
+     HUD CANVAS NASA
+  ========================================================== */
+  const canvas = $("#hud");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d", { alpha: true });
+  const state = { w: 0, h: 0, pts: [], count: 70 };
+
+  const resize = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    state.w = w;
+    state.h = h;
+
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    if (!state.pts.length) {
+      state.pts = Array.from({ length: state.count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 2 + 0.8,
+      }));
+    }
+  };
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  const drawGrid = () => {
+    const step = 42;
+    ctx.save();
+    ctx.globalAlpha = 0.14;
+    ctx.strokeStyle = "rgba(255,255,255,0.18)";
+    ctx.lineWidth = 1;
+
+    for (let x = 0; x < state.w; x += step) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, state.h);
+      ctx.stroke();
+    }
+    for (let y = 0; y < state.h; y += step) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(state.w, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  };
+
+  const animate = () => {
+    ctx.clearRect(0, 0, state.w, state.h);
+    drawGrid();
+
+    ctx.save();
+    for (let i = 0; i < state.pts.length; i++) {
+      const p = state.pts[i];
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < -30) p.x = state.w + 30;
+      if (p.x > state.w + 30) p.x = -30;
+      if (p.y < -30) p.y = state.h + 30;
+      if (p.y > state.h + 30) p.y = -30;
+
+      for (let j = i + 1; j < state.pts.length; j++) {
+        const q = state.pts[j];
+        const dx = p.x - q.x;
+        const dy = p.y - q.y;
+        const d2 = dx * dx + dy * dy;
+        const max = 165 * 165;
+
+        if (d2 < max) {
+          const a = 1 - d2 / max;
+          ctx.globalAlpha = 0.18 * a;
+          // ✅ también en color Jalir
+          ctx.strokeStyle = `rgba(${accentRGB},0.55)`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.restore();
+
+    ctx.save();
+    for (const p of state.pts) {
+      ctx.globalAlpha = 0.45;
+      ctx.fillStyle = "rgba(255,255,255,0.60)";
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+
+    requestAnimationFrame(animate);
+  };
+
+  animate();
+})();
