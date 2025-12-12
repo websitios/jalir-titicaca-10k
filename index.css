@@ -1,26 +1,22 @@
 /* ==========================================================================
-   index.css — JALIR TITICACA 10K (INDEX)
-   Ultra PRO | Estático sin scroll | Topbar invisible (solo burger) | HUD NASA
-   Autor: Lic. José Luis Quispe Flores
+   index.css — (INDEX) | 1 PANEL (Compra tu ticket)
+   ✅ Update: Panel de vidrio MÁS ALTO + ancho reducido (manteniendo originalidad)
    ========================================================================== */
 
 /* ============================================================
    VARIABLES
 ============================================================ */
 :root{
-  /* COLORES JALIR (Originalidad) */
   --morado:#9b92ff;
   --azul:#3f8faa;
   --oscuro:#2b2b2b;
   --blanco:#ffffff;
 
-  /* Botones */
   --buy:#6b0e17;
   --buy2:#8a1422;
   --res:#a59cff;
   --res2:#8d82ff;
 
-  /* Estilo PRO */
   --stroke: rgba(255,255,255,.18);
   --stroke2: rgba(255,255,255,.12);
   --shadow: 0 18px 55px rgba(0,0,0,.25);
@@ -32,24 +28,24 @@
 
   --font: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
-  /* Espaciado fluido (mobile -> 4K) */
   --pad: clamp(12px, 1.8vw, 26px);
   --gap: clamp(14px, 2vw, 26px);
 
-  /* Tipografía fluida */
   --t-sm: clamp(12px, 1.15vw, 16px);
   --t-md: clamp(14px, 1.25vw, 18px);
   --t-lg: clamp(16px, 1.45vw, 22px);
   --t-xl: clamp(18px, 1.9vw, 28px);
   --t-xxl: clamp(22px, 2.6vw, 40px);
 
-  /* Ancho máximo real para 4K */
   --wrap: min(1280px, 92vw);
   --wrap-wide: min(1500px, 92vw);
 
-  /* ✅ CONTROL DE TAMAÑO SOLO IMÁGENES (NO AFECTA MARCOS) */
-  --car-h: 240px;    /* 👈 cambia aquí: 240/230/220 si quieres más pequeño */
-  --logo-h: 140px;   /* 👈 cambia aquí */
+  --car-h: 240px;
+  --logo-h: 140px;
+
+  /* ✅ NUEVO: control del panel (vidrio) */
+  --panel-w: min(980px, 90vw);                 /* 👈 reduce ancho del vidrio */
+  --panel-h: clamp(420px, 56vh, 660px);        /* 👈 aumenta altura del vidrio */
 }
 
 /* ============================================================
@@ -76,7 +72,6 @@ body{
 img{ max-width:100%; height:auto; display:block; }
 .container{ width: var(--wrap); margin:0 auto; }
 
-/* ✅ Bloqueo de scroll cuando el menú abre (tu JS usa .no-scroll) */
 html.no-scroll,
 html.no-scroll body{
   overflow: hidden !important;
@@ -90,12 +85,12 @@ html.no-scroll body{
   inset:0;
   width:100%;
   height:100%;
-  z-index:-1;          /* HUD siempre atrás */
+  z-index:-1;
   pointer-events:none;
 }
 
 /* ============================================================
-   TOPBAR (base, por si luego activas)
+   TOPBAR
 ============================================================ */
 .topbar{
   height: clamp(74px, 7vw, 92px);
@@ -106,7 +101,6 @@ html.no-scroll body{
   z-index: 120;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-
   will-change: transform;
   transition: transform .22s ease, box-shadow .22s ease;
 }
@@ -172,7 +166,6 @@ html.no-scroll body{
   box-shadow: 0 18px 40px rgba(0,0,0,.20);
 }
 
-/* Burger (3 líneas) */
 .burger{
   width: 56px;
   height: 44px;
@@ -192,7 +185,7 @@ html.no-scroll body{
 }
 
 /* ============================================================
-   MENU OFFCANVAS — GLASS TRANSPARENTE
+   MENU OFFCANVAS
 ============================================================ */
 .backdrop{
   position: fixed;
@@ -327,9 +320,7 @@ html.no-scroll body{
   background: rgba(0,0,0,.08);
 }
 
-/* ============================================================
-   GLASS (base)
-============================================================ */
+/* GLASS base */
 .glass{
   background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
   border: 1px solid var(--stroke);
@@ -340,7 +331,7 @@ html.no-scroll body{
 }
 
 /* ============================================================
-   HERO (INDEX)
+   HERO
 ============================================================ */
 .hero{
   padding: calc(var(--pad) + 8px) 0 var(--pad);
@@ -385,29 +376,32 @@ html.no-scroll body{
   align-items:center;
   justify-items:center;
   gap: clamp(10px, 1.4vw, 16px);
-  min-height: clamp(360px, 38vw, 500px);
+
+  /* ✅ MÁS ALTO (vidrio) */
+  min-height: var(--panel-h);
+
   padding-bottom: clamp(14px, 1.8vw, 18px);
 }
 
-/* ✅ Imágenes (SOLO tamaño imagen, NO toca marcos) */
 .simple__img{
-  width: min(620px, 92%);
-  max-height: var(--car-h);
+  width: min(760px, 98%);
+  max-height: clamp(300px, 40vh, 420px);
   object-fit: contain;
-  filter: drop-shadow(0 22px 55px rgba(0,0,0,.26));
-  margin-top: 6px;
-}
-.simple__logo{
-  width: min(420px, 92%);
-  max-height: var(--logo-h);
-  object-fit: contain;
-  filter: drop-shadow(0 18px 45px rgba(0,0,0,.22));
-  margin-top: 6px;
+
+  /* 🔍 Escala */
+  transform: scale(1.25);
+  transform-origin: center center;
+
+  /* 🌑 SOMBRA PRO (realista + profundidad) */
+  filter:
+    drop-shadow(0 22px 45px rgba(0,0,0,.35))
+    drop-shadow(0 8px 18px rgba(0,0,0,.25));
+
+  transition: transform .25s ease, filter .25s ease;
 }
 
-/* ============================================================
-   BOTONES PRO
-============================================================ */
+
+/* BOTONES */
 .btn{
   width: min(520px, 92%);
   max-width: 520px;
@@ -451,11 +445,21 @@ html.no-scroll body{
 }
 
 .btn--buy{ background: linear-gradient(90deg, var(--buy), var(--buy2)); color:#fff; }
-.btn--results{ background: linear-gradient(90deg, var(--res), var(--res2)); color:#fff; }
 
 /* ============================================================
-   SOCIAL (INDEX)
+   ✅ SOLO 1 PANEL (CENTRADO)
 ============================================================ */
+.hero__grid--single{
+  grid-template-columns: 1fr !important;
+  justify-items: center;
+}
+.panel--single{
+  /* ✅ reduce ancho + mantiene vidrio */
+  width: var(--panel-w);
+  margin: 0 auto;
+}
+
+/* SOCIAL */
 .social{ padding: 0 0 calc(var(--pad) + 8px); }
 .social__content{
   width: var(--wrap-wide);
@@ -499,9 +503,7 @@ html.no-scroll body{
   box-shadow: 0 26px 70px rgba(0,0,0,.24);
 }
 
-/* ============================================================
-   FOOTER (INDEX)
-============================================================ */
+/* FOOTER */
 .footer{
   background: var(--oscuro);
   padding: 10px 10px;
@@ -526,13 +528,11 @@ html.no-scroll body{
 }
 .footer a:hover{ border-bottom-color: rgba(255,255,255,.60); }
 
-/* ============================================================
-   WHATSAPP
-============================================================ */
+/* WHATSAPP */
 .whatsapp-float{
   position:fixed;
   right: clamp(12px, 1.6vw, 18px);
-  left: auto; /* ✅ evita bug a la izquierda si alguna regla lo pisa */
+  left: auto;
   bottom: clamp(14px, 1.6vw, 18px);
 
   width: clamp(56px, 5vw, 66px);
@@ -541,7 +541,6 @@ html.no-scroll body{
 
   display:grid;
   place-items:center;
-
   text-decoration:none;
   z-index: 9999;
 
@@ -560,17 +559,13 @@ html.no-scroll body{
   line-height: 1;
 }
 
-/* ============================================================
-   RESPONSIVE
-============================================================ */
+/* RESPONSIVE */
 @media (max-width: 980px){
   .hero__grid{ grid-template-columns: 1fr; }
   .topbar__inner{ width: var(--wrap); }
 }
 
-/* ============================================================
-   INDEX — MODO ESTÁTICO (SIN SCROLL) + TOPBAR INVISIBLE
-============================================================ */
+/* INDEX SIN SCROLL + TOPBAR INVISIBLE */
 body.page-main{
   min-height: 100vh;
   height: 100vh;
@@ -581,16 +576,14 @@ body.page-main{
   flex-direction: column;
   font-size: 13px;
 
-  /* Ajustes “equilibrados” */
   --social-lift: clamp(18px, 3.0vh, 34px);
   --social-title-gap: clamp(8px, 1.4vh, 14px);
   --social-icons-gap: clamp(10px, 1.4vh, 14px);
   --footer-gap: clamp(12px, 2.2vh, 20px);
 
-  position: relative; /* para ::after (fondo) */
+  position: relative;
 }
 
-/* Topbar en index: invisible, solo burger */
 body.page-main .topbar{
   height: 56px !important;
   position: fixed !important;
@@ -600,18 +593,16 @@ body.page-main .topbar{
   box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  z-index: 120; /* ✅ por encima del fondo */
+  z-index: 120;
 }
 body.page-main .topbar__brand,
 body.page-main .topbar__cta{
   display:none !important;
 }
 
-/* Burger un poco más abajo */
 body.page-main .topbar__inner{ padding-top: 8px; }
 body.page-main .burger{ margin-top: 10px; }
 
-/* Hero ocupa pantalla */
 body.page-main .hero{
   flex: 1 0 auto;
   padding-top: 62px !important;
@@ -621,81 +612,46 @@ body.page-main .hero{
   align-items: flex-start;
 }
 body.page-main .hero__grid{ gap: 14px !important; }
-body.page-main .panel--simple{
-  min-height: 340px !important;
-  padding-top: 6px !important;
-  padding-bottom: 8px !important;
-  gap: 10px !important;
-}
 
-/* ✅ Importante: aquí YA NO inflamos el carro */
+body.page-main .panel--simple{
+  /* ✅ AÚN MÁS ALTO en la portada (para quitar “espacio vacío”) */
+  min-height: clamp(460px, 62vh, 720px) !important;
+  padding-top: 6px !important;
+  padding-bottom: 10px !important;
+  gap: 12px !important;
+}
 body.page-main .simple__img{
   max-height: var(--car-h) !important;
   width: auto;
   object-fit: contain;
   margin-top: -4px !important;
 }
-body.page-main .simple__logo{
-  max-height: var(--logo-h) !important;
-  width: auto;
-  object-fit: contain;
-  margin-top: -6px !important;
-}
-
 body.page-main .btn{
+  /* opcional: un poco más ancho dentro del panel */
+  width: min(520px, 86%) !important;
+
   min-height: 52px !important;
   font-size: clamp(14px, 1.2vw, 18px) !important;
   margin-top: -6px !important;
 }
 
-/* Redes y footer */
 body.page-main .social{ flex: 0 0 auto; }
 body.page-main .footer{
   flex: 0 0 auto;
   margin-top: auto !important;
 }
 
-/* ✅ OPCIÓN: EN MÓVILES PEQUEÑOS PERMITIR SCROLL (pon esto al FINAL) */
 @media (max-width: 600px){
   body.page-main{
-    height: auto;          /* ✅ clave: quita el “encierro” de 100vh */
+    height: auto;
     min-height: 100vh;
-    overflow-y: auto;      /* ✅ scroll vertical */
+    overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
   }
 }
 
-/* ============================================================
-   GLASS SUAVE SOLO EN LOS 2 PANELES (HERO)
-   - Redes SIN glass
-============================================================ */
-
-/* 1) En index, por defecto: no glass global */
-body.page-main .glass{
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* 2) Vidrio SOLO en paneles del HERO */
-body.page-main .hero .glass.panel{
-  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05)) !important;
-  border: 1px solid rgba(255,255,255,.14) !important;
-  box-shadow: 0 18px 55px rgba(0,0,0,.18) !important;
-  backdrop-filter: blur(10px) saturate(1.12) !important;
-  -webkit-backdrop-filter: blur(10px) saturate(1.12) !important;
-}
-
-/* 3) Brillo interno SOLO para esos paneles */
-body.page-main .hero .panel::before,
-body.page-main .hero .panel::after{
-  opacity: .22 !important;
-}
-
-/* 4) Redes explícitamente sin vidrio */
+/* SOLO redes sin glass (si lo quieres así) */
 body.page-main .social .glass{
   background: transparent !important;
   border: none !important;
@@ -704,9 +660,6 @@ body.page-main .social .glass{
   -webkit-backdrop-filter: none !important;
 }
 
-/* ============================================================
-   INDEX — AJUSTE PRO: “SÍGUENOS” + ICONOS (SUBIR + ESPACIADO)
-============================================================ */
 body.page-main .social{
   margin-top: calc(var(--social-lift) * -1) !important;
   padding-top: 0 !important;
@@ -726,39 +679,17 @@ body.page-main .social__icons{
 }
 body.page-main .social__icon{ transform: translateY(-1px); }
 
-/* Preferencias de accesibilidad */
 @media (prefers-reduced-motion: reduce){
   .btn, .social__icon, .whatsapp-float, .topbar__cta, .menu__link, .topbar{
     transition: none !important;
   }
 }
 
-/* ============================================================
-   SUBMENU REDES (OFFCANVAS) — ANIMACIÓN PRO
-============================================================ */
+/* SUBMENU REDES */
+.menu__link--toggle{ width: 100%; text-align: left; cursor: pointer; }
+.menu__link--toggle .menu__linkLeft{ display: inline-flex; align-items: center; gap: 12px; }
+.menu__chev{ margin-left: auto; opacity: .9; transition: transform .22s ease; }
 
-/* El botón toggle ("Redes") */
-.menu__link--toggle{
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-}
-
-/* Para alinear icono + texto */
-.menu__link--toggle .menu__linkLeft{
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-}
-
-/* Flecha (chevron) con rotación */
-.menu__chev{
-  margin-left: auto;
-  opacity: .9;
-  transition: transform .22s ease;
-}
-
-/* Contenedor del submenú: estado cerrado animable */
 .menu__sub{
   margin: -6px 6px 6px;
   padding: 10px;
@@ -770,7 +701,6 @@ body.page-main .social__icon{ transform: translateY(-1px); }
   display: grid;
   gap: 10px;
 
-  /* ✅ animación */
   overflow: hidden;
   max-height: 0;
   opacity: 0;
@@ -782,15 +712,13 @@ body.page-main .social__icon{ transform: translateY(-1px); }
     transform .22s ease;
   will-change: max-height, opacity, transform;
 }
-
-/* Estado abierto */
 .menu__sub.is-open{
-  max-height: 360px;   /* ✅ suficiente para 4-8 links */
+  max-height: 360px;
   opacity: 1;
   transform: translateY(0);
 }
+.menu__sub[hidden]{ display:block; max-height:0; opacity:0; }
 
-/* Links del submenú */
 .menu__sublink{
   display:flex;
   align-items:center;
@@ -806,32 +734,17 @@ body.page-main .social__icon{ transform: translateY(-1px); }
   font-weight: 800;
   font-size: var(--t-md);
 
-  transition:
-    transform .14s ease,
-    background .14s ease,
-    border-color .14s ease;
+  transition: transform .14s ease, background .14s ease, border-color .14s ease;
 }
-
-.menu__sublink i{
-  width: 18px;
-  text-align:center;
-  opacity: .95;
-}
-
+.menu__sublink i{ width: 18px; text-align:center; opacity: .95; }
 .menu__sublink:hover{
   transform: translateY(-1px);
   background: rgba(255,255,255,.10);
   border-color: rgba(255,255,255,.16);
 }
+.menu__link--toggle.is-open .menu__chev{ transform: rotate(180deg); }
 
-/* Rotación del chevron cuando está abierto */
-.menu__link--toggle.is-open .menu__chev{
-  transform: rotate(180deg);
-}
-
-/* ============================================================
-   CLICK FX: CAMBIO DE COLOR + GLOW (al presionar)
-============================================================ */
+/* CLICK FX */
 .btn,
 .menu__link,
 .menu__sublink,
@@ -843,8 +756,6 @@ body.page-main .social__icon{ transform: translateY(-1px); }
   -webkit-tap-highlight-color: transparent;
   transition: background .18s ease, border-color .18s ease, box-shadow .18s ease, transform .12s ease, filter .18s ease;
 }
-
-/* efecto real al mantener presionado (mouse down) */
 .btn:active,
 .menu__link:active,
 .menu__sublink:active,
@@ -853,65 +764,42 @@ body.page-main .social__icon{ transform: translateY(-1px); }
 .burger:active{
   transform: translateY(0) scale(.98);
   filter: brightness(1.08) saturate(1.22);
-  box-shadow:
-    0 0 0 2px rgba(0,255,255,.25),
-    0 18px 55px rgba(0,0,0,.35);
+  box-shadow: 0 0 0 2px rgba(0,255,255,.25), 0 18px 55px rgba(0,0,0,.35);
 }
-
-/* ✅ clase que el JS prende por ~180ms: "flash" de color */
 .is-pressed{
   background: rgba(0,255,255,.16) !important;
   border-color: rgba(0,255,255,.42) !important;
-  box-shadow:
-    0 0 0 2px rgba(0,255,255,.22),
-    0 24px 70px rgba(0,0,0,.28) !important;
+  box-shadow: 0 0 0 2px rgba(0,255,255,.22), 0 24px 70px rgba(0,0,0,.28) !important;
 }
 
-/* ============================================================
-   FONDO GLOBAL (titicaca.png) — centrado y a escala completa
-   ✔ ocupa toda la página
-   ✔ no afecta HUD (#hud)
-   ✔ no tapa clicks
-============================================================ */
+/* FONDO */
 body.page-main::after{
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 0;              /* fondo por debajo del contenido */
+  z-index: 0;
   pointer-events: none;
 
   background-image: url("images/titicaca.png");
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: cover;  /* ✅ escala completa (recorta si es necesario) */
+  background-size: cover;
 
   opacity: .50;
   filter: saturate(1.05) contrast(1.05);
 }
 
-/* ============================================================
-   ✅ FIX CRÍTICO: NO TOCAR "position" de elementos FIXED
-   (evita que el offcanvas y whatsapp se rompan)
-============================================================ */
-
-/* Solo eleva el contenido NORMAL, excluyendo overlays fixed */
+/* FIX CAPAS */
 body.page-main > :not(#hud):not(.menu):not(.backdrop):not(.whatsapp-float):not(.topbar){
   position: relative;
   z-index: 1;
 }
-
-/* Asegura capas correctas */
 body.page-main .menu{ z-index: 100; }
 body.page-main .backdrop{ z-index: 90; }
 body.page-main .topbar{ z-index: 120; }
 body.page-main .whatsapp-float{ z-index: 9999; }
 
-/* ============================================================
-   FIX: ocultar burger cuando el menú está abierto
-   (evita que se "junte" con el panel)
-============================================================ */
-
-/* Mientras el offcanvas esté abierto, ocultamos el botón burger */
+/* OCULTAR BURGER con menú abierto */
 html.no-scroll #btnMenu,
 html.no-scroll .burger{
   opacity: 0;
@@ -920,199 +808,130 @@ html.no-scroll .burger{
   transform: translateY(-6px);
   transition: opacity .16s ease, transform .16s ease, visibility .16s ease;
 }
-
-/* Cuando el menú se cierra, vuelve suave */
 #btnMenu,
 .burger{
   transition: opacity .16s ease, transform .16s ease, visibility .16s ease;
 }
-
-/* EXTRA: si tu burger está dentro de .topbar, refuerza */
 html.no-scroll .topbar .burger{
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
-/* ============================================================
-   RESPONSIVE PRO (360px → 4K)
-   - Ajusta layout, escalas y alturas sin romper el modo estático
-   - Mantiene HUD y Offcanvas intactos
-============================================================ */
 
-/* ✅ Safe areas (iPhone notch) */
-:root{
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-right: env(safe-area-inset-right, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-left: env(safe-area-inset-left, 0px);
-}
 
-/* Asegura que el contenido no choque con notch */
-body.page-main{
-  padding-top: var(--safe-top);
-  padding-right: var(--safe-right);
-  padding-bottom: var(--safe-bottom);
-  padding-left: var(--safe-left);
-}
 
-/* 🔻 0) Ultra-pequeños (320–360) */
-@media (max-width: 360px){
+/* ==========================================================================
+   EXTENSIÓN RESPONSIVE UNIVERSAL (ADD-ON)
+   ✔ No modifica estilos base
+   ✔ Solo ajusta escalas y alturas según dispositivo
+   ========================================================================== */
+
+/* 📱 MÓVILES GAMA BAJA (Android antiguos / pantallas pequeñas) */
+@media (max-width: 420px){
   :root{
-    --pad: 12px;
-    --gap: 12px;
-    --car-h: 200px;
-    --logo-h: 120px;
-    --wrap: 94vw;
-    --wrap-wide: 94vw;
+    --panel-h: clamp(420px, 78vh, 520px);
+    --panel-w: 96vw;
   }
 
-  body.page-main .topbar{ height: 54px !important; }
-  body.page-main .hero{ padding-top: 58px !important; }
-  body.page-main .btn{ min-height: 50px !important; }
-  body.page-main .social__title{ font-size: 18px !important; }
-}
-
-/* 🔻 1) Móviles (hasta 600px) */
-@media (max-width: 600px){
-  :root{
-    --wrap: 94vw;
-    --wrap-wide: 94vw;
-    --car-h: clamp(180px, 30vh, 240px);
-    --logo-h: clamp(110px, 18vh, 150px);
-  }
-
-  /* Layout a 1 columna */
-  .hero__grid{
-    grid-template-columns: 1fr !important;
-    gap: 14px !important;
-  }
-
-  /* Paneles más compactos */
-  .panel--simple{
-    min-height: clamp(320px, 48vh, 440px) !important;
-    padding-bottom: 10px !important;
-  }
-
-  /* Botones: ancho completo cómodo */
-  .btn{
-    width: min(560px, 96%) !important;
-    max-width: 560px !important;
-    font-size: clamp(14px, 4.2vw, 18px) !important;
-  }
-
-  /* Offcanvas ocupa mejor el móvil */
-  .menu{
-    left: 10px;
-    top: calc(10px + var(--safe-top));
-    width: min(380px, calc(100vw - 20px));
-    height: calc(100% - 20px - var(--safe-top) - var(--safe-bottom));
-  }
-
-  /* Whatsapp: respeta notch y evita quedar fuera */
-  .whatsapp-float{
-    right: calc(clamp(12px, 1.6vw, 18px) + var(--safe-right));
-    bottom: calc(clamp(14px, 1.6vw, 18px) + var(--safe-bottom));
-  }
-}
-
-/* 🔻 2) Tablets (601–980px) */
-@media (min-width: 601px) and (max-width: 980px){
-  :root{
-    --wrap: min(980px, 92vw);
-    --wrap-wide: min(1100px, 92vw);
-    --car-h: clamp(220px, 28vh, 280px);
-    --logo-h: clamp(130px, 18vh, 170px);
-  }
-
-  .hero__grid{
-    grid-template-columns: 1fr !important; /* tablet: 1 columna suele verse mejor */
-    gap: 16px !important;
-  }
-
-  .panel--simple{
-    min-height: clamp(360px, 44vh, 520px) !important;
+  .simple__img{
+    transform: scale(1.05) !important;
+    max-height: 220px !important;
   }
 
   .btn{
-    width: min(620px, 92%) !important;
-    max-width: 620px !important;
-    font-size: clamp(15px, 2.2vw, 19px) !important;
+    font-size: 15px !important;
   }
 }
 
-/* 🔻 3) Laptops / Desktop normal (981–1440px) */
-@media (min-width: 981px) and (max-width: 1440px){
+/* 📱 MÓVILES GAMA MEDIA / ALTA */
+@media (min-width: 421px) and (max-width: 600px){
   :root{
-    --wrap: min(1280px, 92vw);
-    --wrap-wide: min(1400px, 92vw);
-    --car-h: clamp(240px, 30vh, 300px);
-    --logo-h: clamp(140px, 18vh, 190px);
+    --panel-h: clamp(460px, 74vh, 580px);
+    --panel-w: 94vw;
   }
 
-  .hero__grid{
-    grid-template-columns: 1fr 1fr !important;
-    gap: var(--gap) !important;
+  .simple__img{
+    transform: scale(1.12) !important;
+    max-height: 260px !important;
   }
 }
 
-/* 🔻 4) QHD / UltraWide (1441–1919px) */
-@media (min-width: 1441px) and (max-width: 1919px){
+/* 📱 TABLETS */
+@media (min-width: 601px) and (max-width: 1024px){
   :root{
-    --wrap: min(1400px, 90vw);
-    --wrap-wide: min(1650px, 90vw);
-    --car-h: clamp(260px, 28vh, 340px);
-    --logo-h: clamp(150px, 16vh, 210px);
+    --panel-h: clamp(520px, 68vh, 640px);
+    --panel-w: min(860px, 92vw);
   }
 
-  .btn{
-    max-width: 560px;
+  .simple__img{
+    transform: scale(1.18) !important;
+    max-height: 320px !important;
   }
 }
 
-/* 🔥 5) 4K (>=1920px) */
-@media (min-width: 1920px){
+/* 💻 FULL HD */
+@media (min-width: 1280px){
   :root{
-    --wrap: min(1600px, 86vw);
-    --wrap-wide: min(1900px, 86vw);
-
-    /* Subimos suavemente tamaños para que no se vea "chico" en 4K */
-    --car-h: clamp(300px, 28vh, 420px);
-    --logo-h: clamp(180px, 18vh, 260px);
-
-    --pad: clamp(18px, 1.4vw, 34px);
-    --gap: clamp(18px, 1.6vw, 34px);
+    --panel-h: clamp(620px, 62vh, 720px);
   }
 
-  .btn{
-    font-size: clamp(16px, 1.0vw, 22px);
-    min-height: clamp(58px, 4.6vw, 70px);
-  }
-
-  .social__title{
-    font-size: clamp(22px, 1.6vw, 34px);
+  .simple__img{
+    transform: scale(1.25) !important;
+    max-height: 420px !important;
   }
 }
 
-/* ============================================================
-   ORIENTACIÓN: móviles en landscape (muy bajitos de alto)
-   Evita que se "aplane" todo
-============================================================ */
-@media (max-height: 520px) and (orientation: landscape){
+/* 🖥️ QHD / 4K */
+@media (min-width: 1900px){
   :root{
-    --car-h: clamp(160px, 42vh, 220px);
-    --logo-h: clamp(90px, 24vh, 140px);
+    --panel-h: clamp(720px, 70vh, 880px);
+    --panel-w: min(1100px, 86vw);
   }
 
-  body.page-main .hero{
-    padding-top: 54px !important;
+  .simple__img{
+    transform: scale(1.35) !important;
+    max-height: 520px !important;
+  }
+}
+
+/* ⚙️ OPTIMIZACIÓN PARA DISPOSITIVOS LENTOS */
+@media (prefers-reduced-motion: reduce){
+  .simple__img{
+    transition: none !important;
+    transform: scale(1.1) !important;
   }
 
-  body.page-main .panel--simple{
-    min-height: 300px !important;
+  .panel--simple:hover .simple__img{
+    transform: scale(1.1) !important;
   }
+}
 
-  body.page-main .social{
-    margin-top: -10px !important;
+
+/* ===========================
+   360° HOVER — FIX REAL
+=========================== */
+.panel--simple{
+  perspective: 1000px;
+}
+
+.panel--simple .simple__img{
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition:
+    transform 900ms cubic-bezier(.2,.9,.2,1),
+    filter 250ms ease;
+  will-change: transform;
+}
+
+/* Hover real */
+.panel--simple:hover .simple__img{
+  transform: rotateY(360deg) scale(1.25);
+}
+
+/* Evitar bugs en móviles */
+@media (max-width: 900px){
+  .panel--simple:hover .simple__img{
+    transform: scale(1.15);
   }
 }

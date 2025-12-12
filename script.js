@@ -1,3 +1,4 @@
+// script.js (LIMPIO: solo INDEX, sin promo.html)
 (() => {
   "use strict";
 
@@ -17,10 +18,8 @@
   };
 
   const accentRGB = (() => {
-    // preferimos morado Jalir
     const morado = getCssVar("--morado");
     const rgb = hexToRgb(morado);
-    // fallback al "cyan" original si no existe var
     return rgb ? `${rgb.r},${rgb.g},${rgb.b}` : "0,255,255";
   })();
 
@@ -126,17 +125,14 @@
   const timers = new Map();
   let visibilityHooked = false;
 
-  const startAutoSweep = (key, elements, { sync = false } = {}) => {
+  const startAutoSweep = (key, elements) => {
     if (prefersReduce) return;
-
     if (timers.has(key)) clearInterval(timers.get(key));
 
     const tick = () => {
       if (document.hidden) return;
       if (!elements?.length) return;
-
-      if (sync) elements.forEach((el) => isVisibleEnough(el) && runSweep(el));
-      else elements.forEach((el) => isVisibleEnough(el) && runSweep(el));
+      elements.forEach((el) => isVisibleEnough(el) && runSweep(el));
     };
 
     tick();
@@ -151,25 +147,28 @@
   };
 
   /* ==========================================================
-     1) INDEX: 2 botones a la vez
+     INDEX: botón comprar (único)
   ========================================================== */
-  const indexBtns = attachInteractiveSweep(".btn--buy, .btn--results");
-  if (indexBtns.length) startAutoSweep("indexBtns", indexBtns, { sync: true });
+  const indexBtns = attachInteractiveSweep(".btn--buy");
+  if (indexBtns.length) startAutoSweep("indexBtns", indexBtns);
 
   /* ==========================================================
-     2) PROMO: botón .promo__cta
+     Navegación: menú + submenú redes
   ========================================================== */
-  const promoBtns = attachInteractiveSweep(".promo__cta");
-  if (promoBtns.length) startAutoSweep("promoCta", promoBtns, { sync: true });
+  attachInteractiveSweep(".menu__link, .menu__sublink");
 
-  /* ==========================================================
-     3) Navegación: menú + submenú + back
-  ========================================================== */
-  attachInteractiveSweep(".menu__link, .menu__sublink, .back-btn");
+  // Click FX (is-pressed)
+  const pressables = document.querySelectorAll(
+    ".btn, .menu__link, .menu__sublink, .social__icon, .menu__close, .burger"
+  );
+  pressables.forEach((el) => {
+    el.addEventListener("pointerdown", () => {
+      el.classList.add("is-pressed");
+      setTimeout(() => el.classList.remove("is-pressed"), 180);
+    });
+  });
 
-  /* ==========================================================
-     MENU OFFCANVAS + SUBMENU REDES
-  ========================================================== */
+  // OFFCANVAS + SUBMENU
   const btnMenu = $("#btnMenu");
   const btnClose = $("#btnClose");
   const menu = $("#menu");
@@ -180,17 +179,20 @@
 
   const setRedesOpen = (open) => {
     if (!btnRedes || !submenuRedes) return;
+
     btnRedes.classList.toggle("is-open", open);
     btnRedes.setAttribute("aria-expanded", String(open));
-    submenuRedes.classList.toggle("is-open", open);
 
     if (open) {
       submenuRedes.hidden = false;
+      submenuRedes.offsetHeight; // reflow
+      submenuRedes.classList.add("is-open");
       runSweep(btnRedes);
     } else {
+      submenuRedes.classList.remove("is-open");
       window.setTimeout(() => {
         if (!submenuRedes.classList.contains("is-open")) submenuRedes.hidden = true;
-      }, 240);
+      }, 220);
     }
   };
 
@@ -205,14 +207,7 @@
     menu.classList.add("is-open");
     backdrop.classList.add("is-open");
     document.documentElement.classList.add("no-scroll");
-
-    // ✅ ocultar burger también por JS (además del CSS)
-    if (btnMenu) {
-      btnMenu.setAttribute("aria-expanded", "true");
-      btnMenu.style.visibility = "hidden";
-      btnMenu.style.pointerEvents = "none";
-      btnMenu.style.opacity = "0";
-    }
+    btnMenu?.setAttribute("aria-expanded", "true");
 
     const links = menu.querySelectorAll(".menu__link, .menu__sublink");
     links.forEach((el, i) => setTimeout(() => runSweep(el), 90 + i * 55));
@@ -224,13 +219,7 @@
     menu.classList.remove("is-open");
     backdrop.classList.remove("is-open");
     document.documentElement.classList.remove("no-scroll");
-
-    if (btnMenu) {
-      btnMenu.setAttribute("aria-expanded", "false");
-      btnMenu.style.visibility = "";
-      btnMenu.style.pointerEvents = "";
-      btnMenu.style.opacity = "";
-    }
+    btnMenu?.setAttribute("aria-expanded", "false");
   };
 
   btnMenu?.addEventListener("click", openMenu);
@@ -247,64 +236,10 @@
   menu?.addEventListener("click", (e) => {
     const a = e.target.closest("a,button");
     if (!a) return;
-
     runSweep(a);
-
     if (a.id === "btnRedes") return;
-
-    if (a.classList.contains("menu__sublink")) {
-      closeMenu();
-      return;
-    }
-
+    if (a.classList.contains("menu__sublink")) { closeMenu(); return; }
     if (a.matches("a")) closeMenu();
-  });
-
-  /* ==========================================================
-     TOPBAR: ocultar al bajar / mostrar al subir
-  ========================================================== */
-  const topbar = $(".topbar");
-  const body = document.body;
-  const isStatic = body.classList.contains("page-main");
-
-  const hasScrollablePage = () =>
-    document.documentElement.scrollHeight - window.innerHeight > 4;
-
-  let lastY = window.scrollY;
-  let ticking = false;
-
-  const updateTopbarOnScroll = () => {
-    ticking = false;
-    if (!topbar) return;
-    if (isStatic) return;
-    if (!hasScrollablePage()) return;
-
-    const y = window.scrollY;
-    const dy = y - lastY;
-    const threshold = 10;
-
-    if (Math.abs(dy) < threshold) return;
-
-    if (dy > 0 && y > 40) topbar.classList.add("is-hidden");
-    else topbar.classList.remove("is-hidden");
-
-    lastY = y;
-  };
-
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(updateTopbarOnScroll);
-    },
-    { passive: true }
-  );
-
-  window.addEventListener("resize", () => {
-    if (!topbar) return;
-    if (isStatic) return;
-    if (!hasScrollablePage()) topbar.classList.remove("is-hidden");
   });
 
   /* ==========================================================
@@ -391,7 +326,6 @@
         if (d2 < max) {
           const a = 1 - d2 / max;
           ctx.globalAlpha = 0.18 * a;
-          // ✅ también en color Jalir
           ctx.strokeStyle = `rgba(${accentRGB},0.55)`;
           ctx.lineWidth = 1;
           ctx.beginPath();

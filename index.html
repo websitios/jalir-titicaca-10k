@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jalir Titicaca 10K – 2025</title>
+  <title>Gana con Yhony – Comprar Ticket</title>
 
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -20,20 +20,18 @@
   <!-- TOPBAR -->
   <header class="topbar">
     <div class="topbar__inner">
-      <button class="burger" id="btnMenu" aria-label="Abrir menú">
+      <button class="burger" id="btnMenu" aria-label="Abrir menú" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
 
-      <!-- (Se mantiene por si luego lo quieres activar; en INDEX se oculta por CSS) -->
+      <!-- (Se mantiene por si luego lo activas; en INDEX se oculta por CSS) -->
       <div class="topbar__brand" aria-hidden="true">
-        <span class="chip">JALIR</span>
-        <span class="topbar__title">TITICACA 10K</span>
+        <span class="chip">GANA</span>
+        <span class="topbar__title">CON YHONY</span>
         <span class="chip chip--alt">2025</span>
       </div>
 
-      <a class="topbar__cta" href="https://physicaleducation.shinyapps.io/app_v3/" target="_blank" rel="noopener" aria-hidden="true">
-        RESULTADOS <i class="fa-solid fa-arrow-up-right-from-square"></i>
-      </a>
+      <!-- ✅ Quitado: botón RESULTADOS -->
     </div>
   </header>
 
@@ -47,15 +45,12 @@
     </div>
 
     <nav class="menu__nav">
-      <a class="menu__link" href="promo.html">
+      <!-- ✅ Ya NO existe promo.html (link directo a compra) -->
+      <a class="menu__link" href="https://ganaconyhony.com/" target="_blank" rel="noopener">
         <i class="fa-solid fa-ticket"></i> Comprar tiket
       </a>
 
-      <a class="menu__link" href="https://physicaleducation.shinyapps.io/app_v3/" target="_blank" rel="noopener">
-        <i class="fa-solid fa-list-check"></i> Consultar resultados
-      </a>
-
-      <!-- ✅ REDES: despliega submenú dentro del panel -->
+      <!-- ✅ REDES: submenú dentro del panel -->
       <button
         class="menu__link menu__link--toggle"
         id="btnRedes"
@@ -69,7 +64,6 @@
         <i class="fa-solid fa-chevron-down menu__chev" aria-hidden="true"></i>
       </button>
 
-      <!-- ✅ Submenú redes -->
       <div class="menu__sub" id="submenuRedes" hidden>
         <a class="menu__sublink" href="https://web.facebook.com/yhony.laquise" target="_blank" rel="noopener">
           <i class="fab fa-facebook-f"></i> Facebook
@@ -87,7 +81,7 @@
     </nav>
 
     <div class="menu__footer">
-      <small>© 2025 — Jalir Titicaca 10K</small>
+      <small>© 2025 — Gana con Yhony</small>
     </div>
   </aside>
 
@@ -95,27 +89,15 @@
 
   <!-- HERO -->
   <main class="hero">
-    <div class="container hero__grid">
-
-      <!-- PANEL 1: SOLO CARRO + BOTÓN -->
+    <div class="container hero__grid" style="grid-template-columns: 1fr;">
+      <!-- ✅ SOLO 1 PANEL: COMPRA TICKET -->
       <section class="glass panel panel--simple">
         <img class="simple__img" src="images/auto.png" alt="Auto promo" onerror="this.style.display='none'">
-        <a class="btn btn--buy" href="promo.html">
+        <a class="btn btn--buy" href="https://ganaconyhony.com/" target="_blank" rel="noopener">
           Comprar tu tiket
           <span class="btn__spark"></span>
         </a>
       </section>
-
-      <!-- PANEL 2: SOLO LOGO + BOTÓN -->
-      <section class="glass panel panel--simple">
-        <img class="simple__logo" src="10k.png" alt="Logo Jalir Titicaca 10K" onerror="this.style.display='none'">
-        <a class="btn btn--results" href="https://physicaleducation.shinyapps.io/app_v3/" target="_blank" rel="noopener">
-          Consultar resultados
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          <span class="btn__spark"></span>
-        </a>
-      </section>
-
     </div>
   </main>
 
@@ -143,7 +125,7 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer__line1">Jalir Titicaca 10k - Todos los derechos reservado - 2025</div>
+    <div class="footer__line1">Gana con Yhony - Todos los derechos reservado - 2025</div>
     <div class="footer__line2">
       Desarrollado por
       <a href="https://www.youtube.com/@jsportsTv24" target="_blank" rel="noopener">Jsports.tv</a>
