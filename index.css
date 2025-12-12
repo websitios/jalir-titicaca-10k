@@ -908,30 +908,57 @@ html.no-scroll .topbar .burger{
 }
 
 
-/* ===========================
-   360° HOVER — FIX REAL
-=========================== */
+/* ======================================================================
+   360° HOVER — FIX REAL (DESKTOP) + SAFE MOBILE
+   - Funciona en Chrome/Edge/Firefox con mouse/trackpad
+   - En móviles/tablets NO rota (evita bugs), solo mantiene escala
+====================================================================== */
+
+/* Perspectiva real 3D */
 .panel--simple{
   perspective: 1000px;
+  transform-style: preserve-3d;
 }
 
+/* Estado base */
 .panel--simple .simple__img{
+  transform: scale(1.25) rotateY(0deg);
+  transform-origin: center center;
   transform-style: preserve-3d;
   backface-visibility: hidden;
+
   transition:
     transform 900ms cubic-bezier(.2,.9,.2,1),
     filter 250ms ease;
+
   will-change: transform;
 }
 
-/* Hover real */
-.panel--simple:hover .simple__img{
-  transform: rotateY(360deg) scale(1.25);
-}
-
-/* Evitar bugs en móviles */
-@media (max-width: 900px){
+/* Desktop: giro 360 al hover */
+@media (hover: hover) and (pointer: fine){
   .panel--simple:hover .simple__img{
-    transform: scale(1.15);
+    transform: scale(1.25) rotateY(360deg);
   }
 }
+
+/* Touch / móviles: sin rotación (solo escala controlada) */
+@media (hover: none), (pointer: coarse), (max-width: 900px){
+  .panel--simple .simple__img{
+    transform: scale(1.15) !important;
+  }
+  .panel--simple:hover .simple__img{
+    transform: scale(1.15) !important;
+  }
+}
+
+/* Reduced motion: sin animación */
+@media (prefers-reduced-motion: reduce){
+  .panel--simple .simple__img{
+    transition: none !important;
+    transform: scale(1.12) !important;
+  }
+  .panel--simple:hover .simple__img{
+    transform: scale(1.12) !important;
+  }
+}
+
